@@ -2,8 +2,6 @@ import { motion } from "framer-motion";
 import { ReactElement, useRef, useState } from "react";
 import styled from "styled-components";
 
-// Math.floor(Math.random() * 8) * 15 + 50
-
 const listData = [
   {
     color: "#454545",
@@ -51,7 +49,6 @@ const S = {
   Item: styled(motion.div)<{
     height: number;
     color: string;
-    $topMargin: number;
   }>`
     height: ${({ height }) => `${height}px`};
     background-color: ${({ color }) => color};
@@ -77,18 +74,12 @@ export const DropDownList = (): ReactElement => {
     setDraggingItemIndex(position);
   };
 
-  const handleDragEnter = (
-    e: React.DragEvent<HTMLDivElement>,
-    position: number
-  ) => {
+  const handleDragEnter = (position: number) => {
     setDragOverItemIndex(position);
   };
 
   const handleDragEnd = () => {
-    if (
-      draggingItemIndex !== undefined &&
-      dragOverItemIndex !== undefined
-    ) {
+    if (draggingItemIndex !== undefined && dragOverItemIndex !== undefined) {
       const listCopy = [...list];
       const draggingItemContent = listCopy[draggingItemIndex];
       listCopy.splice(draggingItemIndex, 1);
@@ -112,25 +103,21 @@ export const DropDownList = (): ReactElement => {
               handleDragStart(index);
             }}
             onDragEnter={(e) => {
-              handleDragEnter(e, index);
+              handleDragEnter(index);
             }}
             onDragEnd={handleDragEnd}
             onDragOver={(e) => e.preventDefault()}
             draggable
-            $topMargin={
-              index === dragOverItemIndex &&
-              draggingItemIndex !== dragOverItemIndex &&
-              draggingItemIndex !== undefined
-                ? list[draggingItemIndex].height + 20
-                : 0
-            }
             variants={itemAnimation}
             whileTap="pressed"
-            animate={{ marginTop: index === dragOverItemIndex &&
-              draggingItemIndex !== dragOverItemIndex &&
-              draggingItemIndex !== undefined
-                ? list[draggingItemIndex].height + 20
-                : 0 }}
+            animate={{
+              marginTop:
+                index === dragOverItemIndex &&
+                draggingItemIndex !== dragOverItemIndex &&
+                draggingItemIndex !== undefined
+                  ? list[draggingItemIndex].height + 20
+                  : 0,
+            }}
             transition={{ duration: 0.5 }}
           >
             {`${item.title} - ${index} item`}
