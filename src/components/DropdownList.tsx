@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { ReactElement, useRef, useState } from "react";
 import styled from "styled-components";
+import { IListData, IItem } from "../types";
 
-const listData = [
+const listData: IListData[] = [
   {
     color: "#454545",
     title: "Light Black",
@@ -46,12 +47,9 @@ const listData = [
 ];
 
 const S = {
-  Item: styled(motion.div)<{
-    height: number;
-    color: string;
-  }>`
-    height: ${({ height }) => `${height}px`};
-    background-color: ${({ color }) => color};
+  Item: styled(motion.div)<{ itemData: IItem }>`
+    height: ${({ itemData }) => `${itemData.height}px`};
+    background-color: ${({ itemData }) => itemData.color};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,8 +94,7 @@ export const DropDownList = (): ReactElement => {
       {list &&
         list.map((item, index) => (
           <S.Item
-            height={item.height}
-            color={item.color}
+            itemData={{ height: item.height, color: item.color }}
             key={index}
             onDragStart={(e) => {
               handleDragStart(index);
